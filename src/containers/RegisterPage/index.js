@@ -1,16 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import {Form, Input, Checkbox, Divider, Button, Layout, Card, Image} from 'antd';
- 
+import {Typography, Form, Input, Divider, Button, Layout, Card, Image} from 'antd';
 
-export default RegisterContainer() = () => {
+const { Text, Link } = Typography;
+
+
+export default (props) => {
     const [form] = Form.useForm();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const [submitEmail, setSubmitEmail] = useState(False)
 
 
-    const validate_Email = (email) => {
-        return email !== ""
+    const onSubmitEmail = (event) => {
+        setSubmitEmail(event.value !== "");
     }
 
     return (
@@ -22,9 +25,9 @@ export default RegisterContainer() = () => {
                     form={form}
                     layout="vertical"
                     classname="register-form"
-
+                    onFinish={onSubmitEmail} 
                 >   {
-                    validate_Email(email)? 
+                    submitEmail? 
                     <div>
                         <Form.Item label="Email" rules={[{required: true, message: 'Please input your email!!!'}]}>
                             <Input placeholder="input placeholder"/>
@@ -54,27 +57,27 @@ export default RegisterContainer() = () => {
                     }
                     
                     <Form.Item>
-                        <span>
-                            <a className="register-form-terms" href="">
+                        <Text>
+                            <Link className="register-form-terms" href="">
                                 Terms of Service
-                            </a>
+                            </Link>
                             and
-                            <a className="register-form-policies" href="">
+                            <Link className="register-form-policies" href="">
                                 Privacy Policy
-                            </a>
+                            </Link>
                             .
-                        </span>                        
+                        </Text>                        
                     </Form.Item>
                 </Form>
 
                 <Divider />
                 <div className="register-field">
-                    <span>
+                    <Text>
                         Already sign up?
-                        <a className="Signup" href="">
+                        <Link className="Signup" href="">
                             Go to login
-                        </a>
-                    </span>
+                        </Link>
+                    </Text>
                 </div>
             </Card>
         </Layout>

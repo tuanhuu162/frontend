@@ -1,3 +1,4 @@
+import {Base64} from 'js-base64';
 
 export const onBlurInput = (state, setMessenge, field, isValidate = true) => {
     if (!state || (typeof state === 'string' && state.trim() === "")) {
@@ -43,8 +44,44 @@ export const beforeSubmit = (data, setDisableButton) => {
             } else if (!messenge) {
                 data[field].setMessenge(`${field}_validate`)
             } else {
-
+                return null 
             }
+            return field
         }
+        return null
     })
+
+    if (fieldErrors.length > 0) {
+        if (setDisableButton) {
+            setDisableButton(true)
+        }
+        return false
+    }
+
+    return _data
+};
+
+const decode = (token) => {
+    if (typeof token !== 'string') {
+        return false;
+    }
+    if (token.split(".").length !== 3) {
+        return false;
+    }
+    try {
+        return JSON.parse(Base64.decode(token.split(".")[1]));
+    } catch(error) {
+        return false;
+    }
 }
+
+export const checkRole = (token, protect) => {
+    if (!protect) {
+        return true;
+    }
+    const payload = decode(token);
+
+    if (!payload) {
+        return false;
+    }
+};
